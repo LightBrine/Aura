@@ -8,6 +8,8 @@
 
 <title>AURA Product</title>
 
+<link rel="icon" href="favicon.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
@@ -17,14 +19,36 @@
 <body>
 
 <header>
+  
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<div class="logo">AURA</div>
+<div class="header-icons">
 
-<nav>
+<a href="cart.html" class="cart-icon">
 
-<a href="index.html">الرئيسية</a>
+<i class="fa-solid fa-cart-shopping"></i>
 
-<a href="#">المتجر</a>
+<span id="cart-count">0</span>
+
+</a>
+
+
+</div>
+
+    <div class="logo">AURA</div>
+
+    <div class="menu-btn" onclick="toggleMenu()">
+         ☰
+    </div>
+
+<nav id="mobileMenu">
+
+<a href="Home.html">الرئيسية</a>
+
+<a href="Products.html">المتجر</a>
+
+<a href="Categorys.html">التصنيفات</a>
 
 <a href="#">تواصل</a>
 
@@ -36,7 +60,7 @@
 
 <div class="product-image">
 
-<img src="product3.jpg">
+<img src="product2.jpg">
 
 </div>
 
@@ -52,7 +76,7 @@
 
 <label>المقاس:</label>
 
-<select>
+<select id="size">
 
 <option>M</option>
 
@@ -70,7 +94,7 @@
 
 <label>اللون:</label>
 
-<select>
+<select id="color">
 
 <option>أسود</option>
 
@@ -84,13 +108,36 @@
 
 </select>
 
+<label>الكمية:</label>
+
+<div class="quantity-box">
+
+<button type="button" onclick="decreaseQty()">
+-
+</button>
+
+<input
+type="number"
+id="qty"
+value="1"
+min="1"
+readonly>
+
+<button type="button" onclick="increaseQty()">
++
+</button>
+
+</div>
+
 <br><br>
 
-<a
+<button
 class="whatsapp-btn"
-href="https://wa.me/201115539536?text=أريد طلب تيشيرت ناروتو">
-اطلب عبر واتساب
-</a>
+onclick="addToCart()">
+
+إضافة للسلة
+
+</button>
 
 </div>
 
@@ -125,6 +172,85 @@ href="https://wa.me/201115539536?text=أريد طلب تيشيرت ناروتو"
 
 </a>
 <script src="script.js"></script>
+<script>
+
+function addToCart(){
+
+let cart =
+JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+cart.push({
+
+name:"تيشرت ناروتو",
+
+price:650,
+
+size:
+document.getElementById("size").value,
+
+color:
+document.getElementById("color").value,
+
+qty:
+parseInt(
+document.getElementById("qty").value
+)
+
+});
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+alert("تمت إضافة المنتج للسلة");
+
+window.location.href =
+"cart.html";
+
+}
+
+</script>
+<script>
+
+function increaseQty(){
+
+let qty =
+document.getElementById("qty");
+
+qty.value =
+parseInt(qty.value) + 1;
+
+}
+
+function decreaseQty(){
+
+let qty =
+document.getElementById("qty");
+
+if(parseInt(qty.value) > 1){
+
+qty.value =
+parseInt(qty.value) - 1;
+
+}
+
+}
+
+</script>
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+document.getElementById("cart-count")
+.innerText = cart.length;
+
+</script>
+
 </body>
 
 </html>

@@ -10,6 +10,22 @@
 </head>
 <body>
 <header>
+  
+  <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<div class="header-icons">
+
+<a href="cart.html" class="cart-icon">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+<span id="cart-count">0</span>
+
+</a>
+
+
+</div>
 
     <div class="logo">AURA</div>
 
@@ -70,4 +86,15 @@
 
 </a>
 <script src="script.js"></script>
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+document.getElementById("cart-count")
+.innerText = cart.length;
+
+</script>
+
 </body>

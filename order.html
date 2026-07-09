@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>إتمام الطلب | AURA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+}
+
+body{
+background:#111;
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+margin-bottom:25px;
+color:#ff7a00;
+}
+
+.order-box{
+background:#1b1b1b;
+padding:25px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:20px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+}
+
+input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#2a2a2a;
+color:white;
+}
+
+.product{
+background:#222;
+padding:15px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.total{
+font-size:22px;
+color:#ff7a00;
+margin-top:15px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#ff7a00;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>إتمام الطلب</h1>
+
+<div class="order-box">
+
+<h2>المنتجات المطلوبة</h2>
+
+<div id="products"></div>
+
+<div id="total"></div>
+
+</div>
+
+<div class="order-box">
+
+<form id="orderForm">
+
+<div class="form-group">
+<label>الاسم بالكامل</label>
+<input type="text" id="name" required>
+</div>
+
+<div class="form-group">
+<label>رقم الهاتف</label>
+<input type="tel" id="phone" required>
+</div>
+
+<div class="form-group">
+<label>المحافظة</label>
+<input type="text" id="city" required>
+</div>
+
+<div class="form-group">
+<label>العنوان بالتفصيل</label>
+<input type="text" id="address" required>
+</div>
+
+<button type="submit">
+تأكيد الطلب
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+let productsDiv =
+document.getElementById("products");
+
+let totalDiv =
+document.getElementById("total");
+
+let html = "";
+
+let total = 0;
+
+cart.forEach(item=>{
+
+total += item.price * item.qty;
+
+html += `
+
+<div class="product">
+
+<h3>${item.name}</h3>
+
+<p>المقاس: ${item.size}</p>
+
+<p>اللون: ${item.color}</p>
+
+<p>الكمية: ${item.qty}</p>
+
+<p>السعر: ${item.price} جنيه</p>
+
+</div>
+
+`;
+
+});
+
+productsDiv.innerHTML = html;
+
+totalDiv.innerHTML = `
+
+<div class="total">
+
+الإجمالي: ${total} جنيه
+
+</div>
+
+`;
+
+async function sendOrder() {
+
+const orderData = {
+
+name:
+document.getElementById("name").value,
+
+phone:
+document.getElementById("phone").value,
+
+city:
+document.getElementById("city").value,
+
+address:
+document.getElementById("address").value,
+
+products:
+JSON.stringify(cart),
+
+total:
+total
+
+};
+
+try {
+
+await fetch(
+"https://script.google.com/macros/s/AKfycby7v3bLSw8lr56i4INTuXPpx_vNTt7nFjHNgHalKEMAhP0qLPm2F5-71hrF9Ij8WfOB/exec",
+{
+method:"POST",
+body:JSON.stringify(orderData)
+}
+);
+
+alert("تم إرسال الطلب بنجاح");
+
+localStorage.removeItem("cart");
+
+window.location.href="Home.html";
+
+}
+catch(error){
+
+alert("حدث خطأ أثناء إرسال الطلب");
+
+console.error(error);
+
+}
+
+}
+
+document
+.getElementById("orderForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+sendOrder();
+
+});
+
+</script>
+
+</body>
+
+</html>
